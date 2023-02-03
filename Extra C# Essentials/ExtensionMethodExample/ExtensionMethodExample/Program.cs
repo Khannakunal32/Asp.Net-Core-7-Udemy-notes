@@ -16,6 +16,8 @@ namespace ExtensionMethodExample
 {
     internal class Program
     {
+
+
         static void Main(string[] args)
         {
             //create object
@@ -27,6 +29,8 @@ namespace ExtensionMethodExample
 
             // Calling the extension
             Console.WriteLine(p.GetDiscount());
+            p.showCustomersHelper();
+            p.workingWithList();
             Console.ReadLine();
 
         }

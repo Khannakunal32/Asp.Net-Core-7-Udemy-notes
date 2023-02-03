@@ -29,5 +29,12 @@ namespace ExtensionMethodExampleImportThis
             return product.ProductCost * product.DiscontPercentage / 100;
 
         }
+
+        public static void showCustomersHelper(this Product product)
+        {
+            product.showCustomers();
+        }
+
+
     }
 }
