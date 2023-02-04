@@ -29,7 +29,22 @@ namespace interfaceExample
         /// </summary>
 
 
-        // first go AbstractClassEmployee to see abstract class then see the use of it same implementation in interfaces in IEmployee.cs in classLibrary1
+        // first go AbstractClassEmployee to see abstract class then see the use of it same implementation in interfces in IEmployee.cs in classLibrary1
+
+        public class NullableExample
+        {
+            public int x { get; set; }
+        }
+
+        public class NullableExampleLogic
+        {
+
+            // by type ? infront we let the class and variable accept null 
+            public NullableExample? GetExample()
+            {
+                return null;
+            }
+        }
         static void Main(string[] args)
         {
             //creating object of manager interface
@@ -40,6 +55,15 @@ namespace interfaceExample
             Console.WriteLine(mgr1.GetHealthInsuranceAmountInterface());
 
 
+            /// className = non-nullable (null values are not accepted
+            /// className? = nullable (accepts null values)
+            NullableExampleLogic NullLogic = new NullableExampleLogic();
+            NullableExample? NullEx = NullLogic.GetExample();
+
+            if (NullEx != null)
+            {
+                Console.WriteLine(NullEx.x);
+            }
         }
     }
 
