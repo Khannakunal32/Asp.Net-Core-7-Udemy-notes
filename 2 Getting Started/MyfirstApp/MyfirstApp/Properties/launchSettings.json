@@ -1,0 +1,34 @@
+﻿// this is a jason file
+// here iisSetting is the key and below of its bracket iis its value
+
+{
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:51733",
+      "sslPort": 44384
+    }
+  },
+  "profiles": {
+    //any changes in name of below reflect to above running icon
+    "MyfirstApp.Kestral": {
+      "commandName": "Project",
+      // we can use .net cli command iwththe below 
+      "dotnetRunMessages": true,
+      "launchBrowser": true,
+      "applicationUrl": "https://localhost:7292;http://localhost:5039",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    },
+    // IIs will pass data from http to kestral then to user
+    "IIS Express": {
+      "commandName": "IISExpress",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}
