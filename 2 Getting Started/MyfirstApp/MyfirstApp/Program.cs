@@ -40,7 +40,7 @@ namespace MyfirstApp
                 }
 
 
-                // we cans 
+                // we can store the path of the current page like localhost/kunalkhanna and write if else condition on the basis of it
                 string path = context.Request.Path;
                 string method = context.Request.Method;
 
@@ -49,6 +49,27 @@ namespace MyfirstApp
                 if (path == "/KunalKhanna" || path == "/kunalkhanna")
                 {
                     context.Response.Redirect("https://bractus.com");
+                }
+
+                //Query String
+                // ie localhost?id=10&name=kunal the content after ? is query string ie is passed in case of GET request and for POST request this is not shown and pass in the form of request body
+
+                if (context.Request.Method == "GET")
+                {
+
+                    if (context.Request.Query.ContainsKey("id")) // contains key is to check if the key in passed argument is present
+                    {
+                        string id = context.Request.Query["id"]; // request query stores the value of the key in the string
+                        await context.Response.WriteAsync($"<p>id = {id}</p>");
+                    }
+
+                    if (context.Request.Query.ContainsKey("test"))
+                    {
+                        string test = context.Request.Query["test"];
+                        await context.Response.WriteAsync($"<p>test = {test}</p>");
+                    }
+
+                    // now check writing in browser https://localhost:7292/?id=2&test=kunal
                 }
 
             });
