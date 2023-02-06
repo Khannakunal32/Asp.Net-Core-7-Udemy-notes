@@ -18,26 +18,21 @@ namespace MyfirstApp
             //working with status code
             app.Run(async (HttpContext context) =>
             {
+                //the below line means the content-type to send is a text / html type that is we can send html tags in write async
+                context.Response.Headers["Content-Type"] = "text/html"; // Header is a Dictionay data structure in c#
                 if ("kunal" == "kunal")
                 {
-                    //the below line means the content-type to send is a text / html type that is we can send html tags in write async
-                    context.Response.Headers["Content-Type"] = "text/html";
 
-                    //working with status code
-                    context.Response.StatusCode = 400;
-                    await context.Response.WriteAsync("Status Code is 400");
-                    //working with response headers
-                    context.Response.Headers["myKey"] = "my Value";
+
+                    context.Response.StatusCode = 202; //working with status code
+                    await context.Response.WriteAsync("Status Code is 202");
+
+                    context.Response.Headers["myKey"] = "my Value";  //working with response headers
 
                     // the below line means the content-type to send is a text/html type that is we can send html tags in write async
                     await context.Response.WriteAsync("<h1>Kali linux is the best</h1>");
                 }
-                else
-                {
-                    //working with status code
-                    context.Response.StatusCode = 500;
-                    await context.Response.WriteAsync("Status Code is 500");
-                }
+
 
 
                 // we can store the path of the current page like localhost/kunalkhanna and write if else condition on the basis of it
@@ -59,7 +54,7 @@ namespace MyfirstApp
 
                     if (context.Request.Query.ContainsKey("id")) // contains key is to check if the key in passed argument is present
                     {
-                        string id = context.Request.Query["id"]; // request query stores the value of the key in the string
+                        string id = context.Request.Query["id"]; // request query stores the value of the key in the string, query is a type of dictionary in c#
                         await context.Response.WriteAsync($"<p>id = {id}</p>");
                     }
 
@@ -71,6 +66,31 @@ namespace MyfirstApp
 
                     // now check writing in browser https://localhost:7292/?id=2&test=kunal
                 }
+
+                //if (context.Request.Headers.ContainsKey("User-Agent"))
+                //{
+
+                //    string userAgent = context.Request.Headers["User-Agent"];
+
+                //    //finding a part of string in c# using index of and substring
+                //    int startIndex = userAgent.IndexOf("Mozilla");
+                //    int endIndex = userAgent.IndexOf("(", startIndex);
+
+                //    string displayString = userAgent.Substring(startIndex, endIndex - startIndex);
+
+                //    await context.Response.WriteAsync($"<p>User-Agent = {displayString}</p>");
+
+                //}
+
+
+                /// Note we can create our own Header key value pair in browser with the use of POST MAN
+                /// go to post man get request and in headers add your own key and then value and press send the code below will be shown
+                //if (context.Request.Headers.ContainsKey("Post-Man-Generated-Header"))
+                //{
+                //    string postManHeaderDisplay = context.Request.Headers["Post-Man-Generated-Header"];
+                //    await context.Response.WriteAsync($"<p>{postManHeaderDisplay}</p>");
+                //}
+
 
             });
 
