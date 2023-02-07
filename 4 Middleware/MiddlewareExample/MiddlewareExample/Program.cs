@@ -1,3 +1,5 @@
+using MiddlewareExample.CustomMiddleware;
+
 namespace MiddlewareExample
 {
     public class Program
@@ -5,6 +7,9 @@ namespace MiddlewareExample
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            /// builder.services add transient is used to create custom middleware 
+            builder.Services.AddTransient<MyCustomMiddleware>();
             var app = builder.Build();
 
             //app.MapGet("/", () => "Hello World!");
@@ -50,6 +55,9 @@ namespace MiddlewareExample
                 await context.Response.WriteAsync("2nd middleware overs\n");
 
             });
+
+            /// calling the external customMiddleware
+            app.UseMiddleware<MyCustomMiddleware>();
 
             app.Run(async (HttpContext context) =>
             {
