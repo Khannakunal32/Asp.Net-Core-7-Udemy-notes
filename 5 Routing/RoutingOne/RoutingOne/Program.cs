@@ -22,6 +22,9 @@ namespace RoutingOne
                     await context.Response.WriteAsync($"Endpoint:{endPoint.DisplayName}\n");
                 }
                 await next(context);
+                string path = context.Request.Path;
+                await context.Response.WriteAsync("path - " + path + "\n");
+
             });
 
 
@@ -50,21 +53,45 @@ namespace RoutingOne
                 });
 
                 // below {} is the route values excessed by request.RouteValues
-                endpoints.Map("data/{filename}.{exTeNsion}", async context =>
+                endpoints.Map("extended/{filename}.{exTeNsion}", async context =>
                 {
-                    string path = context.Request.Path;
-                    await context.Response.WriteAsync($"{path}\n");
-
 
                     string? fileName = Convert.ToString(context.Request.RouteValues["filename"]);
                     string? extension = Convert.ToString(context.Request.RouteValues["extension"]); // upper or lower case doesnt matter
                     await context.Response.WriteAsync($"file name - {fileName}\nextension - {extension}\n");
                 });
+
+                //default parameter below
+                endpoints.Map("default/{name=kunal}", async context =>
+                {
+
+                    string? Name = Convert.ToString(context.Request.RouteValues["name"]);
+
+                    await context.Response.WriteAsync($"file name - {Name}\n");
+                });
+
+                //optional parameter below 
+                endpoints.Map("optional/{id?}", async context =>
+                {
+                    // convert.toInt32 converts null value to 0 , we can use debugging here and check in immediate window the value is actually null by typing context.request.routvalues["id"];
+
+                    if (context.Request.RouteValues.ContainsKey("id"))
+                    {
+                        int id = Convert.ToInt32(context.Request.RouteValues["id"]);
+                        await context.Response.WriteAsync($"id - {id}\n");
+                    }
+                    else
+                    {
+                        await context.Response.WriteAsync($"id details is not supplied");
+                    }
+
+
+                });
             });
 
             app.Run(async (context) =>
             {
-                await context.Response.WriteAsync("No path ie / \n");
+                await context.Response.WriteAsync($"No Route matched at {context.Request.Path} \n");
             });
             app.Run();
         }
