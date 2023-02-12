@@ -1,0 +1,67 @@
+<h4>Model Binding</h4><blockquote><p>Model Binding is a feature of asp.net core that reads values from http requests and pass them as arguments to the action method.</p></blockquote><figure><img src="https://img-c.udemycdn.com/redactor/raw/article_lecture/2022-10-22_17-33-22-cfc7b48be0d8550236e2cb304aed72a2.png"></figure><p><br></p><h4>QueryString vs RouteData</h4><figure><img src="https://img-c.udemycdn.com/redactor/raw/article_lecture/2022-10-22_17-33-23-1b1957eb7b184d5d1e282438a91b7ad1.png"></figure><p><br></p><figure><img src="https://img-c.udemycdn.com/redactor/raw/article_lecture/2022-10-22_17-33-23-a3de57241841c68807a3a3e413ff3d87.png"></figure><p><br></p><h4>[FromQuery] and [FromRoute]</h4><figure><img src="https://img-c.udemycdn.com/redactor/raw/article_lecture/2022-10-22_17-33-23-1deb712bfc6af7380b6c093bf882f6aa.png"></figure><p><br></p><p>[FromQuery]</p><pre class="prettyprint linenums">//gets the value from query string only
+public IActionResult ActionMethodName( [FromQuery] type parameter)
+{
+}</pre><p><br></p><p>[FromRoute]</p><pre class="prettyprint linenums">//gets the value from route parameters only
+public IActionResult ActionMethodName( [FromRoute] type parameter)
+{
+}</pre><p><br></p><figure><img src="https://img-c.udemycdn.com/redactor/raw/article_lecture/2022-10-22_17-33-23-e71c762278c66369bb7efb738a84a562.png"></figure><p><br></p><p><br></p><h4>Models</h4><p>Model is a class that represents structure of data (as properties) that you would like to receive from the request and/or send to the response.</p><p>Also known as POCO (Plain Old CLR Objects).</p><p><br></p><figure><img src="https://img-c.udemycdn.com/redactor/raw/article_lecture/2022-10-22_17-33-23-790b267b7f6a2fbdc6054ba8603d480d.png"></figure><p><br></p><p>Model</p><pre class="prettyprint linenums">class ClassName
+{
+public type PropertyName { get; set; }
+}</pre><p><br></p><p><br></p><h4>form-urlencoded and form-data</h4><figure><img src="https://img-c.udemycdn.com/redactor/raw/article_lecture/2022-10-22_17-33-23-5ef0ae48a90ac445b22a68e00ce2ebf2.png"></figure><p><br></p><p>form-urlencoded (default)</p><p>Request Headers</p><p>Content-Type: application/x-www-form-urlencoded</p><p>Request Body</p><p>param1=value1&amp;param2=value2</p><p>form-data</p><p>Request Headers</p><p>Content-Type: multipart/form-data</p><p>Request Body</p><p>--------------------------d74496d66958873e</p><p>Content-Disposition: form-data; name="param1"</p><p>value1</p><p>--------------------------d74496d66958873e</p><p>Content-Disposition: form-data; name="param2"</p><p>value2</p><p><br></p><p><br></p><h4>Model Validation</h4><p>Model</p><pre class="prettyprint linenums">class ClassName
+{
+[Attribute] //applies validation rule on this property
+public type PropertyName { get; set; }
+}</pre><figure><img src="https://img-c.udemycdn.com/redactor/raw/article_lecture/2022-10-22_17-33-23-59a76a29260a013519c8cb1dae190664.png"></figure><p><br></p><p><strong>ModelState</strong></p><p><strong>IsValid</strong></p><p>Specifies whether there is at least one validation error or not (true or false).</p><p><strong>Values</strong></p><p>Contains each model property value with corresponding "Errors" property that contains list of validation errors of that model property.</p><p><strong>ErrorCount</strong></p><p>Returns number of errors.</p><p><br></p><p><br></p><p><strong>Model Validation</strong></p><p>[Required(ErrorMessage = "value")]</p><p>Specifies that the property value is required (can't be blank or empty).</p><p><br></p><p>[StringLength(int maximumLength, MinimumLength = value, ErrorMessage = "value")]</p><p>Specifies minimum and maximum length (number of characters) allowed in the string.</p><p><br></p><p>[Range(int minimum, int maximum, ErrorMessage = "value")]</p><p>Specifies minimum and maximum numerical value allowed.</p><p><br></p><p>[RegularExpression(string pattern, ErrorMessage = "value")]</p><p>Specifies the valid pattern (regular expression).</p><p><br></p><p>[EmailAddress(ErrorMessage = "value")]</p><p>Specifies that the value should be a valid email address.</p><p><br></p><p>[Phone(ErrorMessage = "value")]</p><p>Specifies that the value should be a valid phone number).</p><p>Eg: (999)-999-9999 or 9876543210</p><p><br></p><p>[Compare(string otherProperty, ErrorMessage = "value")]</p><p>Specifies that the values of current property and other property should be same.</p><p><br></p><p>[Url(ErrorMessage = "value")]</p><p>Specifies that the value should be a valid url (website address).</p><p>Eg: http://www.example.com</p><p><br></p><p>[ValidateNever]</p><p>Specifies that the property should not be validated (excludes the property from model validation).</p><p><br></p><h4>Custom Validations</h4><pre class="prettyprint linenums">Custom Validation Attribute
+class ClassName : ValidationAttribute
+{
+public override ValidationResult? IsValid(object? value,
+ValidationContext validationContext)
+{
+//return ValidationResult.Success;
+//[or] return new ValidationResult("error message");
+}
+}</pre><p><br></p><p><strong>ValidationAttribute</strong></p><p>•Base class for all validation attributes such as RequiredAttribute, RegularExpressionAttribute, RangeAttribute, StringLengthAttribute, CompareAttribute etc.</p><p>•Provides properties such as ErrorMessage &amp; methods such as Validate(), IsValid() etc.</p><p><br></p><p><strong>ValidationContext</strong></p><p>•Acts as a parameter for "IsValid()" method of custom validation attribute classes.</p><p>•Provides properties such as ObjectType, ObjectInstance.</p><p><br></p><h4>Custom Validations with Multiple Properties</h4><p>Field1:</p><p>Field2:</p><p>Field3:</p><p>Field4:</p><p>Field5:</p><p>Field6:</p><p>Model Validation</p><p><br></p><h4>IValidatableObject</h4><pre class="prettyprint linenums">class ClassName : IValidatableObject
+{
+//model properties here
+
+public IEnumerable&lt;ValidationResult&gt; Validate(
+ValidationContext validationContext)
+{
+if (condition)
+{
+yield return new ValidationResult("error message");
+}
+}
+}</pre><p><br></p><p>Custom Validations</p><p><strong>IValidatableObject</strong></p><p>•Base class for model classes with validation.</p><p>•Provides a method called Validate() to define class level validation logic.</p><p>•The Validate() method executes after validating all property-level validations are executed; but doesn't execute if at least one property-level validations result error.</p><p><br></p><p><strong>ValidationContext</strong></p><p>•Acts as a parameter for "Validate()" method of model classes with IValidatableObject.</p><p>•Provides properties such as ObjectType, ObjectInstance.</p><p><br></p><h4>[Bind] and [BindNever]</h4><p><strong>[Bind]</strong></p><pre class="prettyprint linenums">Controller
+class ClassNameController
+{
+public IActionResult ActionMethodName( [Bind(
+nameof(ClassName.PropertyName), nameof(ClassName.PropertyName) )]
+ClassName parameterName)
+{
+}
+}</pre><p><br></p><p>[Bind] attribute specifies that only the specified properties should be included in model binding.</p><p>Prevents over-posting (post values into unexpected properties) especially in 'Create' scenarios.</p><p><br></p><p><strong>[BindNever]</strong></p><pre class="prettyprint linenums">Model
+class ModelClassName
+{
+[BindNever]
+public type PropertyName { get; set; }
+}</pre><p><br></p><p>[BindNever] attribute specifies that the specified property should NOT be included in model binding.</p><p>Useful when you have fewer properties to eliminate from model binding.</p><p><br></p><h4>[FromBody]</h4><pre class="prettyprint linenums">//enables the input formatters to read data from request body (as JSON or XML or custom) only
+public IActionResult ActionMethodName( [FromBody] type parameter)
+{
+}</pre><p><br></p><figure><img src="https://img-c.udemycdn.com/redactor/raw/article_lecture/2022-10-22_17-33-24-8dea7c0a18c57ca8f46f00e22d14f011.png"></figure><p><br></p><p><br></p><h4>Input Formatters</h4><figure><img src="https://img-c.udemycdn.com/redactor/raw/article_lecture/2022-10-22_17-33-24-524d81b81626aab2962079fd8f33cd1f.png"></figure><p><br></p><h4>Custom Model Binders</h4><p><strong>Custom Model Binder</strong></p><pre class="prettyprint linenums">class ClassName : IModelBinder
+{
+public Task BindModelAsync(ModelBindingContext bindingContext)
+{
+//gets value from request
+bindingContext.ValueProvider.GetValue("FirstName");
+//returns model object after reading data from the request
+bindingContext.Result = ModelBindingResult.Success(your_object);
+}
+}</pre><p><br></p><p><strong>IModelBinder</strong></p><p>•Base interface for all custom model binders.</p><p>•Provides a method called BindModelAsync, to define logic for binding (reading) data from the request and creating a model object that has be received as parameter in the action method.</p><p><br></p><p><strong>ModelBindingContext</strong></p><p>•Acts as a parameter for "BindModelAsync()" method of custom model binder classes.</p><p>•Provides properties such as HttpContext, ModelState, ValueProvider, Result etc..</p><p><br></p><h4>Custom Model Binder Providers</h4><p><br></p><p>Custom Model Binder Provider</p><pre class="prettyprint linenums">class ClassName : IModelBinderProvider
+{
+public IModelBinder GetBinder(ModelBinderProviderContext providerContext)
+{
+//returns type of custom model binder class to be invoked
+return new BinderTypeModelBinder(typeof(YourModelBinderClassName));
+}
+}</pre><p><br></p><p><strong>IModelBinderProvider</strong></p><p>•Base interface for all custom model binder providers.</p><p>•Provides a method called GetBinder, to return the type of custom model binder class.</p><p><br></p><p><strong>ModelBinderProviderContext</strong></p><p>•Acts as a parameter for "GetBinder()" method of custom model binder provider classes.</p><p>•Provides properties such as BindingInfo, Services etc.</p><p><br></p>
